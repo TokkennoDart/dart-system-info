@@ -3,6 +3,7 @@
 
 import 'package:size_type/size_type.dart';
 
+/// Contains information about the cache memory of the CPU
 class CpuCache {
   final Size L1;
   final Size L2;

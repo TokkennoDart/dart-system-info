@@ -10,6 +10,7 @@ import 'package:system_info/cpu/cpu_cache.dart';
 import 'package:system_info/cpu/cpu_endianness.dart';
 
 // TODO: Improve for multi-architecture processor, multiple processor and SoCs
+/// Contains information about a processor
 @Report(title: "CPU Information")
 class CpuInfo {
   String _vendor;
@@ -30,6 +31,11 @@ class CpuInfo {
 
   CpuCache _cache = new CpuCache();
 
+  /// Load the processor information of the current machine processor if the
+  /// operative system is Linux.
+  ///
+  /// Dependencies:
+  /// - arch
   CpuInfo.loadLinux() {
     List<Map<String, String>> cpuinfo = LinuxUtils.getProcCpuinfo();
 
