@@ -10,6 +10,8 @@ dependencies:
   path: ^1.4.2
   size_type:
     git: https://github.com/minerhub/dart-size-type.git
+  report:
+    git: https://github.com/minerhub/dart-report.git
 
 dev_dependencies:
   test: ^0.12.0
