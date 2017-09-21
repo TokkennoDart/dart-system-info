@@ -88,7 +88,7 @@ class CpuInfo {
   CpuCache _cache = new CpuCache();
 
   CpuInfo.loadLinux() {
-    var cpuinfo = LinuxUtils.getProcCpuinfo();
+    List<Map<String, String>> cpuinfo = LinuxUtils.getProcCpuinfo();
 
     this._vendor = cpuinfo.first["vendor_id"];
     this._model = cpuinfo.first["model name"];
@@ -100,7 +100,12 @@ class CpuInfo {
     this._frequency = LinuxUtils.getSysValueAsInt("/bus/cpu/devices/cpu0/cpufreq/cpuinfo_max_freq", radix: 10, defaultValue: 0);
     this._minFrequency = LinuxUtils.getSysValueAsInt("/bus/cpu/devices/cpu0/cpufreq/cpuinfo_min_freq", radix: 10, defaultValue: 0);
 
-    this._cores = int.parse(cpuinfo.first["cpu cores"]);
+    List<String> cores = [];
+    for (Map<String, String> threadinfo in cpuinfo) {
+      String coreid = threadinfo["physical id"].trim() + "_" + threadinfo["core id"].trim();
+      if (!cores.contains(coreid)) cores.add(coreid); // Recheck for hyper threading. Same core id on multiple threads.
+    }
+    this._cores = cores.length;
     this._threads = cpuinfo.length;
 
     this._cache._l1 = Size.parse(LinuxUtils.getSysValue("/bus/cpu/devices/cpu0/cache/index0/size")) +
