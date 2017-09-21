@@ -1,8 +1,11 @@
+// Copyright (c) 2017, Minerhub. All rights reserved. Use of this source code
+// is governed by a BSD-style license that can be found in the LICENSE file.
+
 library system_info;
 
 import 'dart:io' show Platform;
-import 'src/cpu_info.dart';
-export 'src/cpu_info.dart';
+import 'package:system_info/cpu/cpu_info.dart';
+export 'package:system_info/cpu/cpu_info.dart';
 
 class SystemInfo {
   static CpuInfo _cpuInfo = null;
