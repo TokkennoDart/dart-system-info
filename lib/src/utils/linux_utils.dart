@@ -1,4 +1,4 @@
-import 'dart:io' show File;
+import 'dart:io' show File, Process, ProcessResult;
 import 'package:path/path.dart' as path;
 
 class LinuxUtils {
@@ -40,5 +40,9 @@ class LinuxUtils {
     if (currcpu.length > 0) cpuinfo.add(currcpu);
 
     return cpuinfo;
+  }
+
+  static String sh(String command) {
+    return Process.runSync("sh", ["-c", command]).stdout.toString();
   }
 }
