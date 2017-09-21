@@ -43,10 +43,10 @@ class CpuArchitecture {
 
   const CpuArchitecture(this.Name, this.CodeName, [ this.InstructionSetType = InstSetType.CISC ]);
 
-  String toString() => this.CodeName;
+  String toString() => this.Name;
 
   static const CpuArchitecture alpha = const CpuArchitecture("Alpha", "alpha", InstSetType.RISC);
-  static const CpuArchitecture amd64 = const CpuArchitecture("AMD64", "amd64", InstSetType.CISC);
+  static const CpuArchitecture amd64 = const CpuArchitecture("x86-64", "amd64", InstSetType.CISC);
   static const CpuArchitecture arm = const CpuArchitecture("ARM", "arm", InstSetType.RISC);
   static const CpuArchitecture armel = const CpuArchitecture("Armel", "armel", InstSetType.RISC);
   static const CpuArchitecture armhf = const CpuArchitecture("ARM Hard Float", "armhf", InstSetType.RISC);
@@ -84,6 +84,7 @@ class CpuInfo {
   int _threads = 1;
 
   CpuArchitecture _arch = null;
+  EndiannessType _endian;
 
   CpuCache _cache = new CpuCache();
 
@@ -113,7 +114,28 @@ class CpuInfo {
     this._cache._l2 = Size.parse(cpuinfo.first["cache size"]);
     this._cache._l3 = Size.parse(LinuxUtils.getSysValue("/bus/cpu/devices/cpu0/cache/index3/size"));
 
-    // TODO: parsear el endianes y la arch
+
+    this._endian = int.parse(LinuxUtils.sh("echo -n I | od -to2 | head -n1 | cut -f2 -d\" \" | cut -c6")) == 1 ? EndiannessType.Little : EndiannessType.Big;
+
+    switch(LinuxUtils.sh("arch").trim().toLowerCase()) {
+      case "x86_64": case "sun4":
+      this._arch = CpuArchitecture.amd64; break;
+      case "alpha":
+      this._arch = CpuArchitecture.alpha; break;
+      case "sparc":
+      this._arch = CpuArchitecture.sparc; break;
+      case "arm":
+      this._arch = CpuArchitecture.arm; break;
+      case "m68k":
+      this._arch = CpuArchitecture.m68k; break;
+      case "mips":
+      this._arch = CpuArchitecture.mips; break;
+      case "ppc":
+      this._arch = CpuArchitecture.powerpc; break;
+      case "i386": case "i486": case "i586":
+      this._arch = CpuArchitecture.x86; break;
+      default: break;
+    }
   }
 
   @ReportProperty("Vendor")
@@ -145,6 +167,9 @@ class CpuInfo {
 
   @ReportProperty("Architecture")
   CpuArchitecture get Architecture => this._arch;
+
+  @ReportProperty("Endianness")
+  EndiannessType get Endianness => this._endian;
 
   @ReportProperty("Cache")
   CpuCache get Cache => this._cache;
