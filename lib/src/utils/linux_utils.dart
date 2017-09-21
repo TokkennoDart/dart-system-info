@@ -3,7 +3,8 @@ import 'package:path/path.dart' as path;
 
 class LinuxUtils {
   static String getSysValue(String keypath) {
-    File sysfile = new File(path.join("/sys", keypath));
+    if (keypath.startsWith("/")) keypath = keypath.substring(1);
+    File sysfile = new File(path.join("/sys/", keypath));
     if (sysfile.existsSync()) return sysfile.readAsStringSync();
     else return null;
   }
