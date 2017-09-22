@@ -10,6 +10,7 @@ import 'package:system_info/cpu/cpu.dart';
 import 'package:system_info/cpu/cpu_architecture.dart';
 import 'package:system_info/cpu/cpu_cache.dart';
 import 'package:system_info/cpu/cpu_endianness.dart';
+import 'package:system_info/cpu/cpu_flag.dart';
 
 /// Contains information about a processor
 @Report(title: "CPU Information")
@@ -100,6 +101,15 @@ class CpuInfo {
         break;
     }
 
+    List<CpuFlag> flags = [];
+    List<String> rawFlags = cpuinfo.first["flags"].trim().split(" ");
+
+    for (String flag in rawFlags) {
+      if (CpuFlag.Common.containsKey(flag)) {
+        flags.add(new CpuFlag(flag, CpuFlag.Common[flag]));
+      }
+    }
+
     return [
       new Cpu(
           vendor: vendor,
@@ -113,7 +123,8 @@ class CpuInfo {
           threads: threads,
           architecture: arch,
           endianness: endian,
-          cache: cache)
+          cache: cache,
+          cpuFlags: flags)
     ];
   }
 

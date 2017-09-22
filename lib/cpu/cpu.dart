@@ -6,6 +6,7 @@ import 'package:report/report.dart';
 import 'package:system_info/cpu/cpu_architecture.dart';
 import 'package:system_info/cpu/cpu_cache.dart';
 import 'package:system_info/cpu/cpu_endianness.dart';
+import 'package:system_info/cpu/cpu_flag.dart';
 import 'package:system_info/cpu/cpu_status.dart';
 
 /// Contains information about a processor
@@ -29,6 +30,8 @@ class Cpu {
 
   CpuCache _cache = new CpuCache();
 
+  List<CpuFlag> _flags;
+
   Cpu(
       {String vendor,
       String model,
@@ -38,10 +41,11 @@ class Cpu {
       int frequency = 0,
       int minFrequency = 0,
       int cores = 1,
-      threads = 1,
-      architecture = null,
-      endianness = null,
-      cache})
+      int threads = 1,
+      CpuArchitecture architecture = null,
+      CpuEndianness endianness = null,
+      CpuCache cache,
+      List<CpuFlag> cpuFlags = const []})
       : this._vendor = vendor,
         this._model = model,
         this._modelId = modelId,
@@ -53,7 +57,8 @@ class Cpu {
         this._threads = threads,
         this._arch = architecture,
         this._endian = endianness,
-        this._cache = cache;
+        this._cache = cache,
+        this._flags = cpuFlags;
 
   @ReportProperty("Vendor")
   String get Vendor => this._vendor;
@@ -90,6 +95,9 @@ class Cpu {
 
   @ReportProperty("Cache")
   CpuCache get Cache => this._cache;
+
+  @ReportProperty("Flags")
+  List<CpuFlag> get Flags => new List.from(this._flags);
 
   CpuStatus status() { }
 
