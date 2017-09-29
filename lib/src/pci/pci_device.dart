@@ -3,22 +3,21 @@
 
 import 'dart:async';
 import 'package:meta/meta.dart';
-import 'package:system_info/src/pci/pci_device_type.dart';
 import 'package:system_info/src/common/device.dart';
+import 'package:system_info/src/common/device_type.dart';
 
 /// Represent a PCI device in the host system.
 abstract class PciDevice extends Device {
+  /// Type of device as string.
+  final String pciTypeName = "";
+
+  PciDevice.fromInfo(String name, String vendor,
+      {DeviceType pciType = DeviceType.PCI_Unknown, String pciTypeName = ""})
+      : super.fromInfo(name, vendor, pciType) {}
+
   // OS dependant information
   @protected
   Map<String, String> pciOS = new Map<String, String>();
-
-  /// Type of device.
-  @protected
-  PciDeviceType pciType = PciDeviceType.Unknown;
-
-  /// Type of device as string.
-  @protected
-  String pciTypeName = "";
 
   /// Reset the device.
   /// Warning: Incompatible with some operative system. Handle the exception
@@ -27,5 +26,7 @@ abstract class PciDevice extends Device {
     throw new Exception("reset() is not supported for this device");
   }
 
-  String toString() { return "PciDevice: ${deviceName} (${vendorName})"; }
+  String toString() {
+    return "PciDevice: ${this.name} (${this.vendor})";
+  }
 }

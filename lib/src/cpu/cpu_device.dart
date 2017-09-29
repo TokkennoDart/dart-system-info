@@ -2,6 +2,7 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'package:system_info/src/common/device.dart';
+import 'package:system_info/src/common/device_type.dart';
 import 'cpu_architecture.dart';
 import 'cpu_cache.dart';
 import 'cpu_endianness.dart';
@@ -13,7 +14,7 @@ class CpuDevice extends Device {
   int _familyId;
   int _steppingId;
 
-  int _frequency = 0; // In Hz
+  int _maxFrequency = 0; // In Hz
   int _minFrequency = 0; // In Hz
 
   int _cores = 1;
@@ -26,13 +27,13 @@ class CpuDevice extends Device {
 
   List<CpuFlag> _flags;
 
-  CpuDevice(
+  CpuDevice.fromInfo(
       {String vendor,
       String model,
       int modelId,
       int familyId,
       int steppingId,
-      int frequency = 0,
+      int maxFrequency = 0,
       int minFrequency = 0,
       int cores = 1,
       int threads = 1,
@@ -43,7 +44,7 @@ class CpuDevice extends Device {
       : this._modelId = modelId,
         this._familyId = familyId,
         this._steppingId = steppingId,
-        this._frequency = frequency,
+        this._maxFrequency = maxFrequency,
         this._minFrequency = minFrequency,
         this._cores = cores,
         this._threads = threads,
@@ -51,34 +52,31 @@ class CpuDevice extends Device {
         this._endian = endianness,
         this._cache = cache,
         this._flags = cpuFlags,
-        super() {
-    this.vendorName = vendor;
-    this.deviceName = model;
-  }
+        super.fromInfo(model, vendor, DeviceType.CPU);
 
-  int get ModelId => this._modelId;
+  int get modelId => this._modelId;
 
-  int get FamilyId => this._familyId;
+  int get familyId => this._familyId;
 
-  int get SteppingId => this._steppingId;
+  int get steppingId => this._steppingId;
 
-  int get Frequency => this._frequency;
+  int get maxFrequency => this._maxFrequency;
 
-  int get MinFrequency => this._minFrequency;
+  int get minFrequency => this._minFrequency;
 
-  int get Cores => this._cores;
+  int get cores => this._cores;
 
-  int get Threads => this._threads;
+  int get threads => this._threads;
 
-  CpuArchitecture get Architecture => this._arch;
+  CpuArchitecture get architecture => this._arch;
 
-  CpuEndianness get Endianness => this._endian;
+  CpuEndianness get endianness => this._endian;
 
-  CpuCache get Cache => this._cache;
+  CpuCache get cache => this._cache;
 
-  List<CpuFlag> get Flags => new List.from(this._flags);
+  List<CpuFlag> get flags => new List.from(this._flags);
 
   String toString() {
-    return "${this.deviceName} (model: ${this._modelId}, family: ${this._familyId}, stepping: ${this._steppingId})";
+    return "CpuDevice: ${this.name} (model: ${this.modelId}, family: ${this.familyId}, stepping: ${this.steppingId})";
   }
 }

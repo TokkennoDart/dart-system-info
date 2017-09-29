@@ -2,6 +2,7 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'package:system_info/pci_utils.dart';
+import 'package:system_info/src/common/device_type.dart';
 import 'package:system_info/src/gpu/gpu_device.dart';
 import 'package:system_info/src/gpu/gpu_device_linux.dart';
 import 'dart:async';
@@ -14,7 +15,7 @@ class GpuManager {
     List<GpuDevice> gpus = [];
 
     for (PciDevice device in await PciManager.listDevices()) {
-      if (device.pciType == PciDeviceType.GPU) {
+      if (device.type == DeviceType.GPU) {
         if (Platform.isLinux) gpus.add(new GpuDeviceLinux.fromPci(device));
         else gpus.add(new GpuDevice.fromPci(device));
       }

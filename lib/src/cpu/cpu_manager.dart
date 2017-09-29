@@ -104,13 +104,13 @@ class CpuManager {
     }
 
     return [
-      new CpuDevice(
+      new CpuDevice.fromInfo(
           vendor: vendor,
           model: model,
           modelId: modelId,
           familyId: familyId,
           steppingId: steppingId,
-          frequency: frequency,
+          maxFrequency: frequency,
           minFrequency: minFrequency,
           cores: cores,
           threads: threads,
