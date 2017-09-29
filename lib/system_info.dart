@@ -6,11 +6,11 @@ library system_info;
 
 export 'package:system_info/src/common/status/fan_status.dart';
 export 'package:system_info/src/common/status/temp_status.dart';
-export 'src/gpu/gpu_device.dart';
-export 'src/gpu/gpu_manager.dart';
+export 'package:system_info/src/cpu/cpu_device.dart';
+export 'package:system_info/src/gpu/gpu_device.dart';
 
 import 'dart:async';
-import 'package:system_info/src/cpu/cpu.dart';
+import 'package:system_info/src/cpu/cpu_device.dart';
 import 'package:system_info/src/cpu/cpu_manager.dart';
 import 'package:system_info/src/gpu/gpu_device.dart';
 import 'package:system_info/src/gpu/gpu_manager.dart';

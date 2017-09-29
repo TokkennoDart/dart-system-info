@@ -1,5 +1,5 @@
 import 'package:size_type/size_type.dart';
-import 'package:system_info/src/cpu/cpu.dart';
+import 'package:system_info/src/cpu/cpu_device.dart';
 import 'package:system_info/src/cpu/cpu_flag.dart';
 import 'package:system_info/src/cpu/cpu_cache.dart';
 import 'package:system_info/src/cpu/cpu_endianness.dart';
