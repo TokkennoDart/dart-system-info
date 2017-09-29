@@ -1,20 +1,13 @@
-// Copyright (c) 2017, Minerhub. All rights reserved. Use of this source code
-// is governed by a BSD-style license that can be found in the LICENSE file.
-
 import 'package:size_type/size_type.dart';
-import 'package:report/report.dart';
+import 'package:system_info/src/cpu/cpu.dart';
+import 'package:system_info/src/cpu/cpu_flag.dart';
+import 'package:system_info/src/cpu/cpu_cache.dart';
+import 'package:system_info/src/cpu/cpu_endianness.dart';
+import 'package:system_info/src/cpu/cpu_architecture.dart';
+import 'package:system_info/src/utils/linux_utils.dart';
 import 'dart:io' show Platform;
 
-import 'package:system_info/utils/linux_utils.dart';
-import 'package:system_info/cpu/cpu.dart';
-import 'package:system_info/cpu/cpu_architecture.dart';
-import 'package:system_info/cpu/cpu_cache.dart';
-import 'package:system_info/cpu/cpu_endianness.dart';
-import 'package:system_info/cpu/cpu_flag.dart';
-
-/// Contains information about a processor
-@Report(title: "CPU Information")
-class CpuInfo {
+class CpuManager {
   /// Load the processor information of the current machine processor if the
   /// operative system is Linux.
   ///
@@ -22,7 +15,7 @@ class CpuInfo {
   /// - arch
   ///
   /// TODO: Improve for multi-architecture processor, multiple processor and SoCs
-  static List<Cpu> _getInfoLinux() {
+  static List<CpuDevice> _listCpusLinux() {
     List<Map<String, String>> cpuinfo = LinuxUtils.getProcCpuinfo();
 
     String vendor = cpuinfo.first["vendor_id"];
@@ -55,7 +48,7 @@ class CpuInfo {
     int threads = cpuinfo.length;
 
     Size l1 = Size.parse(
-            LinuxUtils.getSysValue("/bus/cpu/devices/cpu0/cache/index0/size")) +
+        LinuxUtils.getSysValue("/bus/cpu/devices/cpu0/cache/index0/size")) +
         Size.parse(
             LinuxUtils.getSysValue("/bus/cpu/devices/cpu0/cache/index1/size"));
     Size l2 = Size.parse(cpuinfo.first["cache size"]);
@@ -64,7 +57,7 @@ class CpuInfo {
     CpuCache cache = new CpuCache(L1: l1, L2: l2, L3: l3);
 
     CpuEndianness endian = int.parse(LinuxUtils.sh(
-                "echo -n I | od -to2 | head -n1 | cut -f2 -d\" \" | cut -c6")) == 1
+        "echo -n I | od -to2 | head -n1 | cut -f2 -d\" \" | cut -c6")) == 1
         ? CpuEndianness.Little
         : CpuEndianness.Big;
 
@@ -111,7 +104,7 @@ class CpuInfo {
     }
 
     return [
-      new Cpu(
+      new CpuDevice(
           vendor: vendor,
           model: model,
           modelId: modelId,
@@ -128,31 +121,18 @@ class CpuInfo {
     ];
   }
 
-  static List<Cpu> _cpuInfo = null;
+  static List<CpuDevice> _cpuInfo = null;
 
   /// Load the processor information of the current machine processor
-  static List<Cpu> getInfo() {
-    if (CpuInfo._cpuInfo == null) {
+  static List<CpuDevice> listCpus() {
+    if (CpuManager._cpuInfo == null) {
       if (Platform.isLinux)
-        _cpuInfo = CpuInfo._getInfoLinux();
+        _cpuInfo = CpuManager._listCpusLinux();
       else
         throw new Exception(
             "The library system_info don't implements CPU module on this platform.");
     }
 
-    return CpuInfo._cpuInfo;
-  }
-
-  static CpuInfo _getStatusLinux(Cpu cpu) {
-    throw new Exception("Not implementated yet");
-  }
-
-  /// Load the current status of the selected [cpu].
-  static CpuInfo getStatus(Cpu cpu) {
-    if (Platform.isLinux)
-      return CpuInfo._getStatusLinux(cpu);
-    else
-      throw new Exception(
-          "The library system_info don't implements CPU module on this platform.");
+    return CpuManager._cpuInfo;
   }
 }

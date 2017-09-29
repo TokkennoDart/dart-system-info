@@ -7,11 +7,12 @@ environment:
   sdk: '>=1.20.1 <2.0.0'
 
 dependencies:
+  http: ^0.11.3
   path: ^1.4.2
+  binary: ^0.1.3
+  tuple: ^1.0.1
   size_type:
     git: https://github.com/minerhub/dart-size-type.git
-  report:
-    git: https://github.com/minerhub/dart-report.git
 
 dev_dependencies:
   test: ^0.12.0

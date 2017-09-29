@@ -1,20 +1,14 @@
 // Copyright (c) 2017, Minerhub. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
-import 'package:report/report.dart';
-
-import 'package:system_info/cpu/cpu_architecture.dart';
-import 'package:system_info/cpu/cpu_cache.dart';
-import 'package:system_info/cpu/cpu_endianness.dart';
-import 'package:system_info/cpu/cpu_flag.dart';
-import 'package:system_info/cpu/cpu_status.dart';
+import 'package:system_info/src/common/device.dart';
+import 'cpu_architecture.dart';
+import 'cpu_cache.dart';
+import 'cpu_endianness.dart';
+import 'cpu_flag.dart';
 
 /// Contains information about a processor
-@Report(title: "CPU Information")
-class Cpu {
-  String _vendor;
-  String _model;
-
+class CpuDevice extends Device {
   int _modelId;
   int _familyId;
   int _steppingId;
@@ -32,7 +26,7 @@ class Cpu {
 
   List<CpuFlag> _flags;
 
-  Cpu(
+  CpuDevice(
       {String vendor,
       String model,
       int modelId,
@@ -46,9 +40,7 @@ class Cpu {
       CpuEndianness endianness = null,
       CpuCache cache,
       List<CpuFlag> cpuFlags = const []})
-      : this._vendor = vendor,
-        this._model = model,
-        this._modelId = modelId,
+      : this._modelId = modelId,
         this._familyId = familyId,
         this._steppingId = steppingId,
         this._frequency = frequency,
@@ -58,50 +50,35 @@ class Cpu {
         this._arch = architecture,
         this._endian = endianness,
         this._cache = cache,
-        this._flags = cpuFlags;
+        this._flags = cpuFlags,
+        super() {
+    this.vendorName = vendor;
+    this.deviceName = model;
+  }
 
-  @ReportProperty("Vendor")
-  String get Vendor => this._vendor;
-
-  @ReportProperty("Model")
-  String get Model => this._model;
-
-  @ReportProperty("Model ID")
   int get ModelId => this._modelId;
 
-  @ReportProperty("Family ID")
   int get FamilyId => this._familyId;
 
-  @ReportProperty("Stepping ID")
   int get SteppingId => this._steppingId;
 
-  @ReportProperty("Max. Frecuency", suffix: " Hz")
   int get Frequency => this._frequency;
 
-  @ReportProperty("Min. Frecuency", suffix: " Hz")
   int get MinFrequency => this._minFrequency;
 
-  @ReportProperty("Cores")
   int get Cores => this._cores;
 
-  @ReportProperty("Threads")
   int get Threads => this._threads;
 
-  @ReportProperty("Architecture")
   CpuArchitecture get Architecture => this._arch;
 
-  @ReportProperty("Endianness")
   CpuEndianness get Endianness => this._endian;
 
-  @ReportProperty("Cache")
   CpuCache get Cache => this._cache;
 
-  @ReportProperty("Flags")
   List<CpuFlag> get Flags => new List.from(this._flags);
 
-  CpuStatus status() { }
-
   String toString() {
-    return "${this.Model} (model: ${this._modelId}, family: ${this._familyId}, stepping: ${this._steppingId})";
+    return "${this.deviceName} (model: ${this._modelId}, family: ${this._familyId}, stepping: ${this._steppingId})";
   }
 }
