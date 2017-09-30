@@ -19,6 +19,8 @@ import 'package:system_info/src/gpu/gpu_device.dart';
 import 'package:system_info/src/gpu/gpu_manager.dart';
 import 'package:system_info/src/pci/pci_device.dart';
 import 'package:system_info/src/pci/pci_manager.dart';
+import 'package:system_info/src/network/network_device.dart';
+import 'package:system_info/src/network/network_manager.dart';
 
 /// Allows obtain system information of various subsystems.
 /// It works in lazy mode (Only load information when is requested the first time).
@@ -29,4 +31,6 @@ class SystemInfo {
   static Future<List<PciDevice>> get PCIs async { return PciManager.listDevices(); }
   /// Obtains technical information about the system gpus
   static Future<List<GpuDevice>> get GPUs async { return GpuManager.listGpus(); }
+  /// Obtains technical information about the network interfaces
+  static Future<List<NetworkDevice>> get Networks async { return NetworkManager.listInterfaces(); }
 }
