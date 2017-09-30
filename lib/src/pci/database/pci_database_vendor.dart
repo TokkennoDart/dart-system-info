@@ -1,8 +1,7 @@
 // Copyright (c) 2017, Minerhub. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
-import 'package:pci_utils/src/pci/database/pci_database_device.dart';
-import 'package:pci_utils/src/pci/database/pci_database_subsystem.dart';
+import 'package:system_info/src/pci/database/pci_database_device.dart';
 
 class PciDatabaseVendor {
   int _vendorId = 0;

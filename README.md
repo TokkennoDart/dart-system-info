@@ -2,11 +2,16 @@
 
 Get system and hardware information.
 
+## Support
+
+- **Linux 2.6+** (Dependencies: ifconfig)
+- (Windows support is planned)
+
 ## Usage example
 
 - Code:
 ```dart
-  print("CPU Info: ${SystemInfo.CPU.Model} (${SystemInfo.CPU.Vendor})");
+  print("CPU Info: ${SystemInfo.CPUs.first.Model} (${SystemInfo.CPUs.first.Vendor})");
 ```
 - Output:
 ```

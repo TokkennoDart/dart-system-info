@@ -5,9 +5,9 @@ import 'dart:async';
 import 'dart:io' show File;
 import 'package:http/http.dart' as http;
 
-import 'package:pci_utils/src/pci/database/pci_database_device.dart';
-import 'package:pci_utils/src/pci/database/pci_database_subsystem.dart';
-import 'package:pci_utils/src/pci/database/pci_database_vendor.dart';
+import 'package:system_info/src/pci/database/pci_database_device.dart';
+import 'package:system_info/src/pci/database/pci_database_subsystem.dart';
+import 'package:system_info/src/pci/database/pci_database_vendor.dart';
 
 /// PCI Database to consult names from device codes.
 class PciDatabase {

@@ -1,7 +1,11 @@
 name: system_info
 description: Get system and hardware information.
-version: 0.0.1
-#homepage: https://github.com/minerhub/dart-system-info
+version: 0.0.1-alpha.1
+
+authors:
+- Minerhub Team
+- Aitor González Fernández <reimashi@gmail.com>
+homepage: https://github.com/minerhub/dart-system-info
 
 environment:
   sdk: '>=1.20.1 <2.0.0'
