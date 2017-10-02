@@ -12,13 +12,13 @@ class NetworkDevice extends Device {
   final String mac;
 
   NetworkDevice.fromInfo(String name, String vendor,
-      NetworkInterface interface, String mac)
+      NetworkInterface interface, [String mac = ""])
       : this.interface = interface,
         this.mac = mac,
         super.fromInfo(name, vendor, DeviceType.Network);
 
   NetworkDevice.fromPci(PciDevice pci,
-      NetworkInterface interface, String mac)
+      NetworkInterface interface, [String mac = ""])
       : this.interface = interface,
         this.mac = mac,
         super.fromInfo(pci.name, pci.vendor, DeviceType.Network);

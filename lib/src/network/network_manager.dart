@@ -50,12 +50,23 @@ class NetworkManager {
     return devInterfaces;
   }
 
+  static Future<List<NetworkDevice>> _listGenericDevices() async {
+    List<NetworkInterface> inets = await NetworkInterface.list();
+    List<NetworkDevice> devInterfaces = [];
+
+    for (NetworkInterface inet in inets) {
+      devInterfaces.add(new NetworkDevice.fromInfo("Generic Network Device", "Unknown", inet));
+    }
+
+    return devInterfaces;
+  }
+
   /// List all PCI devices in the host system.
   static Future<List<NetworkDevice>> listInterfaces() async {
     if (Platform.isLinux) {
       return NetworkManager._listLinuxDevices();
     } else {
-      throw new Exception("This operative system is not supported yet.");
+      return NetworkManager._listGenericDevices();
     }
   }
 }
