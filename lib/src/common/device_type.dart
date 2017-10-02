@@ -9,5 +9,6 @@ enum DeviceType {
   Network,
   USB,
   PCI_Unknown,
+  Memory,
   Unknown
 }

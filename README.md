@@ -4,7 +4,7 @@ Get system and hardware information.
 
 ## Support
 
-- **Linux 2.6+** (Dependencies: ifconfig)
+- **Linux 2.6+** (Dependencies: ifconfig, dmidecode)
 - (Windows support is planned)
 
 ## Usage example
