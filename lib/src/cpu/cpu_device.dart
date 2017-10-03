@@ -77,6 +77,10 @@ class CpuDevice extends Device {
   List<CpuFlag> get flags => new List.from(this._flags);
 
   String toString() {
-    return "CpuDevice: ${this.name} (model: ${this.modelId}, family: ${this.familyId}, stepping: ${this.steppingId})";
+    List<String> parts = [];
+    if (this.modelId != null) parts.add("model: ${this.modelId}");
+    if (this.familyId != null) parts.add("family: ${this.familyId}");
+    if (this.steppingId != null) parts.add("stepping: ${this.steppingId}");
+    return "CpuDevice: ${this.name} ${parts.length > 0 ? "(" + parts.join(", ") + ")" : ""}";
   }
 }

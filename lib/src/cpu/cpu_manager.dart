@@ -5,7 +5,8 @@ import 'package:system_info/src/cpu/cpu_cache.dart';
 import 'package:system_info/src/cpu/cpu_endianness.dart';
 import 'package:system_info/src/cpu/cpu_architecture.dart';
 import 'package:system_info/src/utils/linux_utils.dart';
-import 'dart:io' show Platform;
+import 'dart:io' show Platform, Process;
+import 'dart:convert';
 
 class CpuManager {
   /// Load the processor information of the current machine processor if the
@@ -121,6 +122,37 @@ class CpuManager {
     ];
   }
 
+  static List<CpuDevice> _listCpusWindows() {
+    String wmiout = Process.runSync("wmic", "cpu get name, description, revision, l2cachesize, l3cachesize, manufacturer, currentclockspeed, maxclockspeed /value".split(" ")).stdout;
+
+    String vendor = "Unknown";
+    String model = "Generic CPU";
+    int l2cache = 0;
+    int l3cache = 0;
+    int minFreq = 0;
+    int maxFreq = 0;
+
+    for (String line in wmiout.split("\r\n")) {
+      if (line.contains("CurrentClockSpeed")) minFreq = int.parse(line.split("=")[1].trim());
+      if (line.contains("MaxClockSpeed")) maxFreq = int.parse(line.split("=")[1].trim());
+      if (line.contains("L2CacheSize")) l2cache = int.parse(line.split("=")[1].trim()) * 1000;
+      if (line.contains("L3CacheSize")) l3cache = int.parse(line.split("=")[1].trim()) * 1000;
+      if (line.contains("Name")) model = line.split("=")[1].trim();
+      if (line.contains("Manufacturer")) vendor = line.split("=")[1].trim();
+    }
+
+
+
+    return [
+      new CpuDevice.fromInfo(
+          vendor: vendor,
+          model: model,
+          maxFrequency: maxFreq,
+          minFrequency: minFreq,
+          cache: new CpuCache(L2: new Size(l2cache), L3: new Size(l3cache)))
+    ];
+  }
+
   static List<CpuDevice> _cpuInfo = null;
 
   /// Load the processor information of the current machine processor
@@ -128,6 +160,8 @@ class CpuManager {
     if (CpuManager._cpuInfo == null) {
       if (Platform.isLinux)
         _cpuInfo = CpuManager._listCpusLinux();
+      else if (Platform.isWindows)
+        _cpuInfo = CpuManager._listCpusWindows();
       else
         throw new Exception(
             "The library system_info don't implements CPU module on this platform.");
